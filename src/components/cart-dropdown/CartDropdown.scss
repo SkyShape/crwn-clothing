@@ -11,6 +11,16 @@
     right: 40px;
     z-index: 5;
 
+    .empty-message {
+        font-size: 18px;
+        font-weight: 600;
+        display: flex;
+        margin-top: 50px;
+        align-items: center;
+        justify-content: space-around;
+        flex-direction: column;
+    }
+
     .cart-items {
         height: 240px;
         display: flex;
