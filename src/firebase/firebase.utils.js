@@ -1,6 +1,9 @@
 import firebase from 'firebase/app'
 import 'firebase/firestore'
-import 'firebase/auth'
+import 'firebase/auth';
+import { enableIndexedDbPersistence, initializeFirestore, CACHE_SIZE_UNLIMITED } from "firebase/firestore";
+
+
 
 
 const firebaseConfig = {
@@ -41,6 +44,22 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
 
 firebase.initializeApp(firebaseConfig)
 
+enableIndexedDbPersistence(db)
+  .catch((err) => {
+      if (err.code == 'failed-precondition') {
+          // Multiple tabs open, persistence can only be enabled
+          // in one tab at a a time.
+          // ...
+      } else if (err.code == 'unimplemented') {
+          // The current browser does not support all of the
+          // features required to enable persistence
+          // ...
+      }
+  });
+
+  const firestoreDb = initializeFirestore(app, {
+    cacheSizeBytes: CACHE_SIZE_UNLIMITED
+  });
 
 export const auth = firebase.auth()
 export const firestore = firebase.firestore()
