@@ -12,6 +12,8 @@ const firebaseConfig = {
   measurementId: "G-NZGTHKD423"
   }
 
+firebase.initializeApp(firebaseConfig)
+
 export const createUserProfileDocument = async (userAuth, additionalData) => {
   if (!userAuth) return;
   const userRef = firestore.doc(`users/${userAuth.uid}`);
@@ -37,7 +39,7 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
 
 }
 
-firebase.initializeApp(firebaseConfig)
+
 
 export const addCollectionAndDocuments = async (collectionKey, objectsToAdd)=>{
   const collectionRef = firestore.collection(collectionKey);
@@ -64,7 +66,7 @@ export const convertCollectionsSnapshotToMap = (collections) => {
     }
     
   })
-  transformedCollection.reduce((accumulator, collection)=>{
+  return transformedCollection.reduce((accumulator, collection)=>{
     accumulator[collection.title.toLowerCase()] = collection;
     return accumulator;
   }, {});
@@ -72,8 +74,10 @@ export const convertCollectionsSnapshotToMap = (collections) => {
 
 export const auth = firebase.auth()
 export const firestore = firebase.firestore()
-firebase.firestore().enablePersistence()
+// firebase.firestore().enablePersistence()
 
 const provider = new firebase.auth.GoogleAuthProvider()
 provider.setCustomParameters({prompt: 'select_account'})
 export const signInWithGoogle = () => auth.signInWithPopup(provider)
+
+export default firebase
